@@ -25,12 +25,27 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         }
         
         let webView = WKWebView(frame: view.bounds)
+        webView.isInspectable = true
+        
         view.addSubview(webView)
+       
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let safeArea = view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            webView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            webView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            webView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+            webView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+        ])
+        webView.pageZoom = 0.8
+        webView.scrollView.isScrollEnabled = true
         
         webView.navigationDelegate = self
         webView.configuration.userContentController.add(self, name: "write_sms")
-   
-        guard let url = URL(string: "https://www.kalendes.com/account_beta/#/agenda") else {
+        webView.configuration.allowsInlineMediaPlayback = true
+        webView.customUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1"
+        guard let url = URL(string: "https://pro.planity.com") else {
             return
         }
 
